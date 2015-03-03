@@ -2,6 +2,16 @@ data = [];
 
 saved = [];
 
+function isSaved (obj) {
+	for (var i = 0; i < saved.length; i++) {
+		console.log(saved[i].link, obj.link, saved[i].link === obj.link);
+		if (saved[i].link === obj.link) {
+			return true;
+		}
+	}
+	return false;
+}
+
 var Schedule = React.createClass({
 	getInitialState: function() {
 		return {eventList: data, isListAll: true, date:"2015-03-04"};
@@ -108,12 +118,12 @@ var StartTimeTable = React.createClass({
 
 var ScheduleEvent = React.createClass({
 	getInitialState: function () {
-		return {saved: false, isDescriptionHidden: true};
+		return {saved: isSaved(this.props.data), isDescriptionHidden: true};
 	},
 	save: function(e) {
 		e.preventDefault();
 		this.setState({saved: !this.state.saved});
-		if (saved.indexOf(this.props.data) > -1) {
+		if (isSaved(this.props.data)) {
 			console.log('removing');
 			saved.splice(saved.indexOf(this.props.data), 1);
 		} else {
@@ -127,7 +137,7 @@ var ScheduleEvent = React.createClass({
 		this.setState({isDescriptionHidden: !this.state.isDescriptionHidden});
 	},
 	render: function() {
-		var isSaved = this.state.saved ? 'Remove' : 'Save';
+		var savedText = this.state.saved ? 'Remove' : 'Save';
 		var scheduleEventClasses = this.state.saved ? 'scheduleEvent saved' : 'scheduleEvent'
 		var isDescriptionHiddenText = this.state.isDescriptionHidden ? 'Description': 'Hide';
 		var hidden = this.state.isDescriptionHidden ? 'hidden canHide' : 'canHide';
@@ -137,7 +147,7 @@ var ScheduleEvent = React.createClass({
 				<Speakers list={this.props.data.speakers} />
 				<p>Until <b>{this.props.data.endTime}</b> in <b>{this.props.data.location}</b></p>
 				<p className={hidden}>{this.props.data.description}</p>
-				<a onClick={this.toggleDescription} href="#">{isDescriptionHiddenText}</a> | <a href={this.props.data.link} target="_">Link</a> | <a onClick={this.save} href="#">{isSaved}</a>
+				<a onClick={this.toggleDescription} href="#">{isDescriptionHiddenText}</a> | <a href={this.props.data.link} target="_">Link</a> | <a onClick={this.save} href="#">{savedText}</a>
 			</div>
 		);
 	}
