@@ -30,9 +30,9 @@ var Schedule = React.createClass({
 	toggleList: function(e) {
 		e.preventDefault();
 		if (this.state.isListAll) {
-			this.setState({date: saved});
+			this.setState({eventList: saved});
 		} else {
-			this.setState({date: data});
+			this.setState({eventList: data});
 		}
 		this.setState({isListAll: !this.state.isListAll});
 	},
@@ -120,7 +120,7 @@ var ScheduleEvent = React.createClass({
 			console.log('adding');
 			saved.push(this.props.data);
 		}
-
+		console.log("saved", saved);
 	},
 	toggleDescription: function(e) {
 		e.preventDefault();
